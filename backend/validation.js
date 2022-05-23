@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const registerValidation = (data) => {
     const schema = joi.object(
         {
-            name: joi.string().min(6).max(255).required(),
+            name: joi.string().max(255).required(),
             email: joi.string().min(6).max(255).required(),
             password: joi.string().min(6).max(255).required()
         });
