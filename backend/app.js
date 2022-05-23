@@ -2,6 +2,9 @@ const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const { verifyToken } = require("./validation");
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
+const swaggerDefinition = yaml.load('./swagger.yaml') 
 
 require('dotenv-flow').config();
 
@@ -35,6 +38,8 @@ app.get("/", (res, req) => {
   res.send("yay home page")
 })
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+
 const authRoutes = require("./routes/auth");
 app.use("/user", authRoutes);
 
@@ -42,6 +47,7 @@ const TodosRoute = require('./routes/Todos');
   app.use('/todos', verifyToken,  TodosRoute)
 
 // start server
-app.listen(3000, () => {
-  console.log("Listening at port 3000")
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, function () {
+  console.log("Server is running on port:  " + PORT);
+});
